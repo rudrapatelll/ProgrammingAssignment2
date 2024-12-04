@@ -3,39 +3,36 @@
 
 ## Write a short comment describing this function
 
-makeCacheMatrix <- function(x = matrix()) {
-  inv <- NULL 
-  
-  set <- function(y) {
+## I simply set the input x as a matrix
+## and then set the solved value "s" as a null
+## then I changed every reference to "mean" to "solve"
+makeCacheMatrix <- function(x = matrix(sample(1:100,9),3,3))
+{
+  s <- NULL
+  set <- function(y) 
+  {
     x <<- y
-    inv <<- NULL
+    s <<- NULL
   }
-        
   get <- function() x
-  
-  setInverse <- function(inverse) inv <<- inverse
-  
-  getInverse <- function() inv
-  
+  setsolve <- function(solve) s <<- solve
+  getsolve <- function() s
   list(set = set, get = get,
-       setInverse = setInverse,
-       getInverse = getInverse)
+       setsolve = setsolve,
+       getsolve = getsolve)
 }
-
-cacheSolve <- function(x, ...) {
-  inv <- x$getInverse() 
-  
-  if (!is.null(inv)) {
-    message("Getting cached data")
-    return(inv)
+##
+## Same here, changed "mean" to "solve" and "m" to "s"
+cacheSolve <- function(x, ...)
+{
+  s <- x$getsolve()
+  if(!is.null(s)) 
+  {
+    message("getting inversed matrix")
+    return(s)
   }
-  
-  mat <- x$get()
-  if (nrow(mat) != ncol(mat)) {
-    stop("The matrix must be square to compute its inverse.")
-  }
-  inv <- solve(mat, ...)  
-  x$setInverse(inv)  
-  
-  inv  
+  data <- x$get()
+  s <- solve(data, ...)
+  x$setsolve(s)
+  s
 }
